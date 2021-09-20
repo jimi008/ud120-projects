@@ -54,6 +54,7 @@ accuracy = accuracy_score(labels_test, pred)
 print ("The accuracy on the test set is: ",accuracy)
 
 # answer = pred[50]
+#tell how many have class "1" and how many have class "0"
 answer = collections.Counter(pred)
 # pred.count(1)
 print("Answer is: ", answer)

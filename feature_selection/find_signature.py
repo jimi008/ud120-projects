@@ -10,8 +10,8 @@ numpy.random.seed(42)
 ### mini-project.
 words_file = "../text_learning/your_word_data.pkl" 
 authors_file = "../text_learning/your_email_authors.pkl"
-word_data = joblib.load( open(words_file, "r"))
-authors = joblib.load( open(authors_file, "r") )
+word_data = joblib.load( open(words_file, "rb"))
+authors = joblib.load( open(authors_file, "rb") )
 
 
 
@@ -28,6 +28,7 @@ features_train = vectorizer.fit_transform(features_train)
 features_test  = vectorizer.transform(features_test).toarray()
 
 
+
 ### a classic way to overfit is to use a small number
 ### of data points and a large number of features;
 ### train on only 150 events to put ourselves in this regime
@@ -37,6 +38,25 @@ labels_train   = labels_train[:150]
 
 
 ### your code goes here
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
 
+clf = DecisionTreeClassifier()
+clf = clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+accuracy = accuracy_score(labels_test, pred)
 
+print ("The accuracy on the test set is: ",accuracy)
+
+feature_imp_list = clf.feature_importances_
+# len(feature_imp_list)
+
+# ok quite high, so printing only if above threshold..
+import numpy as np
+for i,val in np.ndenumerate(feature_imp_list):
+    if val > 0.2:
+        print (i,val)
+        # printing most powerful word.
+        # used sum(i) to convert tuple to int 
+        print(vectorizer.get_feature_names()[sum(i)])
 
